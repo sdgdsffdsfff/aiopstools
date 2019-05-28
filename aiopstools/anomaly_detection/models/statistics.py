@@ -4,9 +4,7 @@ import datetime
 import numpy as np
 
 class POP(object):
-    """
-    同比最值(最大值和最小值)
-    """
+    """同比最值(最大值和最小值)"""
     def __init__(self, freq):
         self.min_threshold = 1
         self.max_threshold = 0.8
@@ -44,7 +42,7 @@ class POP(object):
         return data_list
 
     def check(self, data, check_value):
-        '''计算数据的同比,data是列表形式'''
+        """计算数据的同比,data是列表形式"""
         pop_data = self.get_pop_data(data)
         # 记录同比率
         pop_percent = []
@@ -70,9 +68,7 @@ class POP(object):
             print('The num of pop data is little.')
 
 class POP_Amplitude(object):
-    """
-    同比振幅
-    """
+    """同比振幅"""
     def __init__(self, freq):
         self.min_threshold = 0.5
         self.max_threshold = 0.5
@@ -130,8 +126,8 @@ class POP_Amplitude(object):
         return amplitude_data_list
 
     def check(self, data, check_value):
-        '''振幅的最大值'''
-        #归一化
+        """振幅的最大值"""
+        # 归一化
         #maxvalue = np.max(data)
         #minvalue = np.min(data)
         #for i in range(len(data)):
@@ -141,24 +137,24 @@ class POP_Amplitude(object):
         if len(amplitude_data) >= 1:
             value = np.mean(amplitude_data)
             if abs(amplitude_data[0]) > np.max(amplitude_data) * self.max_threshold and check_value > data.values[-1]:
-                return "uprush",value
+                return "uprush", value
             if abs(amplitude_data[0]) > np.max(amplitude_data) * self.min_threshold and check_value < data.values[-1]:
-                return "anticlimax",value
+                return "anticlimax", value
             else:
-                return "no alarm",value
+                return "no alarm", value
 
 class Tail(object):
-    """
-    环比(相邻节点)
-    """
+    """环比(相邻节点)"""
     def __init__(self, freq):
         self.threshold = 0.3
         self.tail_num = 10
         self.freq = freq
 
     def check(self, timeseries, check_value):
-        '''计算数据的环比
-        比较检测点和最近n个值的差值。'''
+        """
+        计算数据的环比
+        比较检测点和最近n个值的差值。
+        """
         data = timeseries.values
         # 计算动态阈值
         max_avg = np.max(data) - np.mean(data)
